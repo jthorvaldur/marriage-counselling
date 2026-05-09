@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Financial Control — Communication Pattern Library</title>
+<meta name="description" content="Understanding financial control patterns in relationships. From subtle information asymmetry to overt economic abuse — what to look for and how to build financial partnership.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@200;300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0f172a;
+  --card: #1e293b;
+  --border: #334155;
+  --text: #f1f5f9;
+  --text2: #94a3b8;
+  --accent: #6366f1;
+  --accent-glow: rgba(99,102,241,0.15);
+  --red: #f87171;
+  --green: #4ade80;
+  --yellow: #fbbf24;
+  --orange: #fb923c;
+  --purple: #c084fc;
+  --teal: #2dd4bf;
+}
+@media (prefers-color-scheme: light) {
+  :root { --bg: #f0f2f5; --card: #fff; --border: #e5e7eb; --text: #1a1a2e; --text2: #6b7280; --accent-glow: rgba(99,102,241,0.08); }
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: 'Outfit', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── Nav ── */
+.nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 50;
+  padding: 0 2rem; height: 56px;
+  display: flex; align-items: center; justify-content: space-between;
+  background: rgba(15,23,42,0.85);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border);
+}
+.nav-brand {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.72rem; font-weight: 600;
+  letter-spacing: 0.2em; text-transform: uppercase;
+  color: var(--accent); text-decoration: none;
+}
+.nav-links { display: flex; gap: 1.5rem; list-style: none; }
+.nav-links a {
+  font-size: 0.78rem; font-weight: 400;
+  color: var(--text2); text-decoration: none;
+  transition: color 0.2s;
+}
+.nav-links a:hover { color: var(--text); }
+
+/* ── Container ── */
+.c { max-width: 820px; margin: 0 auto; padding: 0 2rem 80px; }
+
+/* ── Page Header ── */
+.page-header { padding: 120px 2rem 40px; max-width: 820px; margin: 0 auto; }
+.page-eyebrow {
+  font-family: 'JetBrains Mono', monospace; font-size: 0.65rem; letter-spacing: 0.3em;
+  text-transform: uppercase; color: var(--teal); margin-bottom: 1rem;
+  display: flex; align-items: center; gap: 0.6rem;
+}
+.page-eyebrow a { color: var(--text2); text-decoration: none; transition: color 0.2s; }
+.page-eyebrow a:hover { color: var(--text); }
+.page-header h1 { font-size: clamp(1.6rem, 3.5vw, 2.4rem); font-weight: 300; letter-spacing: -0.01em; line-height: 1.2; margin-bottom: 0.8rem; }
+.page-header h1 strong { font-weight: 600; }
+.page-header .lead { color: var(--text2); font-size: 1rem; max-width: 640px; line-height: 1.7; }
+
+/* ── Section Headers ── */
+h2 {
+  background: var(--card); border: 1px solid var(--border); border-radius: 10px 10px 0 0;
+  padding: 18px 24px; font-size: 1.05rem; font-weight: 600;
+  margin-top: 40px; display: flex; align-items: center; gap: 10px;
+}
+h2 .h2-icon { font-size: 1rem; opacity: 0.7; }
+.s { background: var(--card); border: 1px solid var(--border); border-top: none; border-radius: 0 0 10px 10px; padding: 24px; margin-bottom: 8px; }
+.s p { margin-bottom: 14px; font-size: 0.92rem; color: var(--text2); line-height: 1.75; }
+.s p:last-child { margin-bottom: 0; }
+.s strong { color: var(--text); font-weight: 500; }
+.s ul, .s ol { margin: 10px 0 14px 20px; font-size: 0.92rem; color: var(--text2); }
+.s li { margin-bottom: 6px; line-height: 1.6; }
+
+/* ── Callouts ── */
+.callout, .callout-red, .callout-green, .callout-warm {
+  border-left: 3px solid var(--accent);
+  background: rgba(99,102,241,0.06);
+  padding: 16px 20px; border-radius: 0 8px 8px 0;
+  margin: 18px 0; font-size: 0.9rem; line-height: 1.7; color: var(--text2);
+}
+.callout-red { border-color: var(--red); background: rgba(248,113,113,0.06); }
+.callout-green { border-color: var(--green); background: rgba(74,222,128,0.06); }
+.callout-warm { border-color: var(--yellow); background: rgba(251,191,36,0.06); }
+
+/* ── Tables ── */
+table { width: 100%; border-collapse: collapse; font-size: 13px; margin: 14px 0; }
+thead th {
+  text-align: left; padding: 10px 14px;
+  font-family: 'JetBrains Mono', monospace; font-size: 0.68rem; font-weight: 500;
+  letter-spacing: 0.1em; text-transform: uppercase; color: var(--text2);
+  border-bottom: 1px solid var(--border);
+}
+tbody td { padding: 10px 14px; border-bottom: 1px solid var(--border); color: var(--text2); vertical-align: top; line-height: 1.6; }
+tbody tr:last-child td { border-bottom: none; }
+tbody tr:hover { background: rgba(99,102,241,0.04); }
+td .level-label { font-family: 'JetBrains Mono', monospace; font-size: 0.72rem; font-weight: 500; color: var(--text); }
+
+/* ── Checklist ── */
+.checklist { list-style: none; margin-left: 0; padding-left: 0; }
+.checklist li { position: relative; padding-left: 26px; margin-bottom: 10px; font-size: 0.9rem; color: var(--text2); line-height: 1.65; }
+.checklist li::before { content: ''; position: absolute; left: 0; top: 6px; width: 14px; height: 14px; border: 1.5px solid var(--border); border-radius: 3px; }
+
+/* ── Footer ── */
+footer { text-align: center; color: var(--text2); font-size: 0.78rem; margin-top: 40px; padding: 24px 2rem; border-top: 1px solid var(--border); }
+footer a { color: var(--text2); text-decoration: none; }
+footer a:hover { color: var(--text); }
+/* ── Responsive ── */
+@media (max-width: 600px) {
+  .nav { padding: 0 1rem; } .nav-links { gap: 0.8rem; }
+  .page-header { padding: 100px 1.2rem 30px; } .c { padding: 0 1.2rem 60px; }
+  h2 { padding: 14px 18px; font-size: 0.95rem; } .s { padding: 18px; }
+  table { font-size: 12px; } thead th, tbody td { padding: 8px 10px; }
+}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <a href="index.html" class="nav-brand">Marriage Counselling</a>
+  <ul class="nav-links">
+    <li><a href="index.html#patterns">Patterns</a></li>
+    <li><a href="https://github.com/jthorvaldur/marriage-counselling" target="_blank">GitHub</a></li>
+  </ul>
+</nav>
+
+<header class="page-header">
+  <div class="page-eyebrow">
+    <a href="index.html">Pattern Library</a>
+    <span>/</span>
+    <span>Financial Control</span>
+  </div>
+  <h1>Financial <strong>Control</strong></h1>
+  <p class="lead">
+    Financial control in relationships ranges from subtle information asymmetry to overt economic abuse.
+    It is one of the most difficult patterns to detect because financial matters are culturally treated
+    as private, and imbalances often develop gradually under the guise of practicality.
+  </p>
+</header>
+
+<div class="c">
+
+  <!-- ── 1. What Is Financial Control ── -->
+
+  <h2><span class="h2-icon">&#x24;</span> What Is Financial Control</h2>
+  <div class="s">
+    <p>
+      Financial control describes a pattern where one partner gains disproportionate power over
+      the couple's economic life. In domestic violence research, economic abuse is recognised as
+      a distinct form of intimate partner violence (Adams et al., 2008; Postmus et al., 2012).
+      It can exist independently of physical violence and often persists even after physical
+      safety has been established.
+    </p>
+    <p>
+      The pattern exists on a <strong>spectrum</strong>. At one end is simple information asymmetry &mdash;
+      one partner does not know what accounts exist or what the household's financial picture looks like.
+      At the other end is deliberate economic abuse: restricting a partner's ability to earn money,
+      hiding assets, or creating financial dependency as a means of control.
+    </p>
+    <p>
+      Most couples do not start at the extreme end. Financial control typically builds incrementally.
+      One partner may take on financial management out of genuine convenience, and over time,
+      the other partner loses visibility, access, and eventually agency. The shift from
+      <strong>division of labour</strong> to <strong>control</strong> is often invisible to both partners
+      until a crisis forces the question.
+    </p>
+    <div class="callout">
+      Financial control is a <strong>pattern</strong>, not a personality trait. It can be enacted
+      by either partner, regardless of who earns more. Identifying the pattern is not the same as
+      assigning blame &mdash; it is the first step toward building a more equitable partnership.
+    </div>
+  </div>
+
+  <!-- ── 2. The Spectrum ── -->
+
+  <h2><span class="h2-icon">&#x2195;</span> The Spectrum</h2>
+  <div class="s">
+    <p>
+      Financial control is not binary. The following table describes levels of increasing severity.
+      Many couples will recognise elements at the lower end of the spectrum without any intent to
+      control &mdash; these are starting points for conversation, not accusations.
+    </p>
+    <table>
+      <thead>
+        <tr>
+          <th>Level</th>
+          <th>Pattern</th>
+          <th>What It Looks Like</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="level-label">1</span></td>
+          <td><span class="level-label">Information asymmetry</span></td>
+          <td>One partner does not know what bank accounts, investments, or debts exist. Financial statements go to one person. The other partner has a general sense but no specifics.</td>
+        </tr>
+        <tr>
+          <td><span class="level-label">2</span></td>
+          <td><span class="level-label">Unilateral decisions</span></td>
+          <td>Major purchases, investments, or financial commitments are made by one partner without discussion. The other partner learns after the fact, or not at all.</td>
+        </tr>
+        <tr>
+          <td><span class="level-label">3</span></td>
+          <td><span class="level-label">Access restriction</span></td>
+          <td>One partner controls all financial access &mdash; bank logins, credit cards, cash. The other partner must ask for money or justify spending. Allowances may be set.</td>
+        </tr>
+        <tr>
+          <td><span class="level-label">4</span></td>
+          <td><span class="level-label">Hidden accounts</span></td>
+          <td>Undisclosed bank accounts, credit cards, loans, or investments. One partner maintains a financial life invisible to the other. Discovery typically triggers a crisis.</td>
+        </tr>
+        <tr>
+          <td><span class="level-label">5</span></td>
+          <td><span class="level-label">Document pressure</span></td>
+          <td>"Sign this" without adequate explanation. Tax returns, loan applications, property transfers, or legal documents presented as routine when they carry significant implications.</td>
+        </tr>
+        <tr>
+          <td><span class="level-label">6</span></td>
+          <td><span class="level-label">Economic dependency</span></td>
+          <td>Deliberately limiting the other partner's ability to earn &mdash; discouraging employment, sabotaging work opportunities, controlling access to education or transport. Creates a dependency that makes leaving difficult.</td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="callout-red">
+      Levels 5 and 6 represent serious concerns that may constitute economic abuse.
+      If you recognise these patterns in your relationship, consider reaching out to
+      a domestic violence hotline or a family law professional for confidential guidance.
+    </div>
+  </div>
+
+  <!-- ── 3. Warning Signs ── -->
+
+  <h2><span class="h2-icon">&#x26A0;</span> Warning Signs</h2>
+  <div class="s">
+    <p>
+      The following indicators do not each prove financial control on their own. Many couples
+      divide financial tasks unevenly for practical reasons. These become warning signs when
+      multiple indicators cluster together, when one partner resists changing the arrangement,
+      or when requests for transparency are met with defensiveness or deflection.
+    </p>
+    <ul class="checklist">
+      <li>One partner handles all finances and resists sharing details when asked</li>
+      <li>Joint accounts exist but only one partner has login credentials or signatory authority</li>
+      <li>Unexplained withdrawals, transfers, or account balance changes</li>
+      <li>One partner receives an "allowance" rather than having independent access to shared funds</li>
+      <li>Financial mail, statements, or tax documents are intercepted or hidden</li>
+      <li>Requests to see account statements are met with anger, dismissal, or guilt-tripping</li>
+      <li>One partner must justify routine purchases while the other spends freely</li>
+      <li>Large debts are discovered that one partner did not know about</li>
+      <li>One partner's name is absent from property titles, leases, or vehicle registrations</li>
+      <li>Financial discussions are consistently avoided, postponed, or shut down</li>
+      <li>One partner discourages the other from working or advancing their career</li>
+      <li>Threats are connected to financial consequences: "If you leave, you will have nothing"</li>
+      <li>One partner controls the other's access to their own earnings</li>
+    </ul>
+    <p>
+      The critical question is not whether one partner manages the finances. Many healthy
+      relationships have a "financial lead." The question is whether <strong>both partners
+      have access, visibility, and voice</strong> in financial decisions that affect them.
+    </p>
+  </div>
+
+  <!-- ── 4. Why It Is Hard to See ── -->
+
+  <h2><span class="h2-icon">&#x1F576;</span> Why It Is Hard to See</h2>
+  <div class="s">
+    <p>
+      Financial control is among the most invisible relationship patterns. Several factors
+      contribute to this invisibility:
+    </p>
+    <p>
+      <strong>Cultural normalisation.</strong> The idea that "one person is just better with money"
+      is widely accepted. Couples often fall into financial roles early in the relationship and
+      never revisit them. The partner who does not manage finances may feel relieved rather than
+      concerned &mdash; until the information gap becomes a power gap.
+    </p>
+    <p>
+      <strong>Privacy framing.</strong> Money is culturally treated as deeply private, even within
+      couples. A partner who asks questions about finances may feel they are being intrusive,
+      or may be told they are being controlling for asking. This inversion &mdash; where seeking
+      transparency is framed as the problem &mdash; is a hallmark of the pattern.
+    </p>
+    <p>
+      <strong>Gradual escalation.</strong> Financial control rarely begins with overt restriction.
+      It typically starts with small, practical decisions: "I will handle the bills." "It is easier
+      if I manage the investments." Each step is reasonable in isolation. The cumulative effect
+      &mdash; one partner with full visibility and the other with none &mdash; only becomes apparent
+      over time.
+    </p>
+    <p>
+      <strong>Competence framing.</strong> The managing partner's control is often framed as
+      competence: "I am protecting us." "You do not need to worry about this." This framing makes
+      it difficult for the other partner to object without appearing to question their partner's
+      abilities or good intentions.
+    </p>
+    <p>
+      <strong>Shame and avoidance.</strong> The partner with less financial knowledge may feel
+      embarrassed about the gap and avoid asking questions that would reveal it. This avoidance
+      reinforces the dynamic, as the information gap widens with each passing year.
+    </p>
+    <div class="callout-warm">
+      Financial conversations feel uncomfortable. That discomfort is not a reason to avoid
+      them &mdash; it is often a reason they are needed.
+    </div>
+  </div>
+
+  <!-- ── 5. Prevention Tools ── -->
+
+  <h2><span class="h2-icon">&#x2692;</span> Prevention Tools</h2>
+  <div class="s">
+    <p>
+      Healthy financial partnership does not require both partners to be equally interested in
+      money management. It requires that both partners have <strong>access</strong>,
+      <strong>visibility</strong>, and <strong>voice</strong>. The following practices help
+      couples build and maintain financial equity.
+    </p>
+
+    <p><strong>Shared visibility.</strong></p>
+    <ul>
+      <li>Both partners can see all accounts &mdash; bank, investment, retirement, debt</li>
+      <li>Both partners have login credentials for all financial institutions</li>
+      <li>Net worth and cash flow are reviewed together, not reported by one partner to the other</li>
+      <li>Both names appear on major assets: property, vehicles, significant accounts</li>
+    </ul>
+
+    <p><strong>Joint decision thresholds.</strong></p>
+    <ul>
+      <li>Agree on a spending amount above which both partners must discuss and approve</li>
+      <li>This threshold applies equally to both partners, regardless of income contribution</li>
+      <li>Major financial commitments &mdash; loans, investments, large purchases &mdash; are always joint decisions</li>
+      <li>Neither partner signs legal or financial documents without both understanding the implications</li>
+    </ul>
+
+    <p><strong>Regular financial check-ins.</strong></p>
+    <ul>
+      <li>Schedule a recurring time (monthly or quarterly) to review finances together</li>
+      <li>Cover income, expenses, savings, debts, and upcoming financial decisions</li>
+      <li>Both partners come prepared to ask questions and raise concerns</li>
+      <li>Keep the tone collaborative: "How are we doing?" rather than "What did you spend?"</li>
+    </ul>
+
+    <p><strong>Independent access.</strong></p>
+    <ul>
+      <li>Both partners maintain some independent financial access &mdash; a personal account, a credit card in their own name</li>
+      <li>Both partners have access to emergency funds without needing the other's permission</li>
+      <li>Both partners understand the household's insurance, tax, and estate situation</li>
+      <li>Financial knowledge is shared, not hoarded &mdash; if one partner manages investments, they explain the strategy</li>
+    </ul>
+
+    <div class="callout-green">
+      Financial transparency protects both partners. The goal is shared understanding,
+      not surveillance.
+    </div>
+  </div>
+
+  <!-- ── 6. Healthy vs. Controlling Financial Dynamics ── -->
+
+  <h2><span class="h2-icon">&#x2696;</span> Healthy vs. Controlling Financial Dynamics</h2>
+  <div class="s">
+    <p>
+      The difference between a functional financial arrangement and a controlling one
+      is not about who does the work. It is about whether the arrangement is
+      <strong>chosen</strong> or <strong>imposed</strong>, and whether it can be
+      <strong>questioned</strong> without consequence.
+    </p>
+    <table>
+      <thead>
+        <tr>
+          <th>Healthy Dynamic</th>
+          <th>Controlling Dynamic</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>One partner manages finances; the other has full visibility and can ask questions freely</td>
+          <td>One partner manages finances; questions are met with irritation, deflection, or guilt</td>
+        </tr>
+        <tr>
+          <td>Financial roles are discussed and agreed upon; either partner can renegotiate</td>
+          <td>Financial roles are assumed or imposed; attempts to change them are resisted</td>
+        </tr>
+        <tr>
+          <td>Both partners know account balances, debts, and financial commitments</td>
+          <td>One partner is kept in the dark about the full financial picture</td>
+        </tr>
+        <tr>
+          <td>Large purchases are discussed before they happen</td>
+          <td>Large purchases appear without prior discussion</td>
+        </tr>
+        <tr>
+          <td>Both partners have independent access to funds</td>
+          <td>One partner must ask permission to spend or access money</td>
+        </tr>
+        <tr>
+          <td>Financial mistakes are discussed as shared problems</td>
+          <td>Financial mistakes are used as justification to remove the other partner's access</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ── 7. Starting the Conversation ── -->
+
+  <h2><span class="h2-icon">&#x1F4AC;</span> Starting the Conversation</h2>
+  <div class="s">
+    <p>
+      If you recognise elements of this pattern in your relationship, raising the topic can
+      feel daunting. The following approaches can help:
+    </p>
+    <ul>
+      <li><strong>Name the pattern, not the person.</strong> "I have noticed we have an information gap around our finances" is more productive than "You are hiding things from me."</li>
+      <li><strong>Start with your own experience.</strong> "I realised I could not answer basic questions about our financial situation, and that concerns me."</li>
+      <li><strong>Propose a structure.</strong> "Could we schedule a monthly check-in where we review our finances together?" A concrete suggestion is easier to respond to than a general accusation.</li>
+      <li><strong>Acknowledge discomfort.</strong> "I know this is uncomfortable to talk about. It is uncomfortable for me too. That is why I think we need to."</li>
+      <li><strong>Seek professional support.</strong> A financial planner or couples therapist can provide neutral ground for these conversations. Having a third party can reduce defensiveness.</li>
+    </ul>
+    <div class="callout">
+      The response to a request for financial transparency is itself informative.
+      A partner who welcomes the conversation &mdash; even if surprised &mdash; is signalling
+      openness. A partner who reacts with anger, guilt-tripping, or further secrecy
+      is demonstrating the pattern in real time.
+    </div>
+  </div>
+
+  <!-- ── 8. References ── -->
+
+  <h2><span class="h2-icon">&#x1F4DA;</span> References</h2>
+  <div class="s">
+    <ul>
+      <li>Adams, A. E., Sullivan, C. M., Bybee, D., &amp; Greeson, M. R. (2008). Development of the Scale of Economic Abuse. <em>Violence Against Women</em>, 14(5), 563&ndash;588.</li>
+      <li>Postmus, J. L., Plummer, S.-B., McMahon, S., Murshid, N. S., &amp; Kim, M. S. (2012). Understanding economic abuse in the lives of survivors. <em>Journal of Interpersonal Violence</em>, 27(3), 411&ndash;430.</li>
+      <li>Stark, E. (2007). <em>Coercive Control: How Men Entrap Women in Personal Life.</em> Oxford University Press.</li>
+      <li>Gottman, J. M., &amp; Silver, N. (1999). <em>The Seven Principles for Making Marriage Work.</em> Crown Publishers.</li>
+      <li>National Network to End Domestic Violence (NNEDV). Economic abuse fact sheets. <a href="https://nnedv.org" style="color:var(--accent);">nnedv.org</a></li>
+    </ul>
+  </div>
+
+</div>
+
+<footer>
+  <a href="index.html">Communication Pattern Library</a> &mdash; Prevention, not prosecution.
+</footer>
+
+</body>
+</html>

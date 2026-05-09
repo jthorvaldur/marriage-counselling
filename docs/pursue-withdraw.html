@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pursue-Withdraw Cycle — Communication Pattern Library</title>
+<meta name="description" content="The pursue-withdraw cycle from Emotionally Focused Therapy. How escalation and shutdown feed each other, and evidence-based strategies to interrupt the loop.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@200;300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0f172a;
+  --card: #1e293b;
+  --border: #334155;
+  --text: #f1f5f9;
+  --text2: #94a3b8;
+  --accent: #6366f1;
+  --accent-glow: rgba(99,102,241,0.15);
+  --red: #f87171;
+  --green: #4ade80;
+  --yellow: #fbbf24;
+  --orange: #fb923c;
+  --purple: #c084fc;
+  --teal: #2dd4bf;
+}
+@media (prefers-color-scheme: light) {
+  :root { --bg: #f0f2f5; --card: #fff; --border: #e5e7eb; --text: #1a1a2e; --text2: #6b7280; --accent-glow: rgba(99,102,241,0.08); }
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: 'Outfit', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* -- Nav -- */
+.nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 50;
+  padding: 0 2rem; height: 56px;
+  display: flex; align-items: center; justify-content: space-between;
+  background: rgba(15,23,42,0.85);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border);
+}
+.nav-brand {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.72rem; font-weight: 600;
+  letter-spacing: 0.2em; text-transform: uppercase;
+  color: var(--accent); text-decoration: none;
+}
+.nav-links { display: flex; gap: 1.5rem; list-style: none; }
+.nav-links a {
+  font-size: 0.78rem; font-weight: 400;
+  color: var(--text2); text-decoration: none;
+  transition: color 0.2s;
+}
+.nav-links a:hover { color: var(--text); }
+
+/* -- Container -- */
+.c { max-width: 820px; margin: 0 auto; padding: 100px 2rem 80px; }
+
+/* -- Page Header -- */
+.page-header {
+  margin-bottom: 48px;
+}
+.page-eyebrow {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.65rem; letter-spacing: 0.3em;
+  text-transform: uppercase; color: var(--accent);
+  margin-bottom: 12px;
+}
+.page-header h1 {
+  font-size: clamp(1.6rem, 3.5vw, 2.4rem);
+  font-weight: 300; letter-spacing: -0.01em;
+  line-height: 1.2; margin-bottom: 8px;
+}
+.page-header h1 strong { font-weight: 600; }
+.page-header .source {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.75rem; color: var(--text2);
+}
+
+/* -- Section Headers -- */
+h2 {
+  font-size: 1.05rem; font-weight: 600;
+  padding: 14px 20px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 10px 10px 0 0;
+  margin-top: 40px;
+}
+.s {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-top: none;
+  border-radius: 0 0 10px 10px;
+  padding: 20px;
+  margin-bottom: 8px;
+}
+.s p { color: var(--text2); font-size: 0.92rem; margin-bottom: 12px; }
+.s p:last-child { margin-bottom: 0; }
+.s ul, .s ol { color: var(--text2); font-size: 0.92rem; padding-left: 1.4em; margin-bottom: 12px; }
+.s li { margin-bottom: 6px; }
+.s li:last-child { margin-bottom: 0; }
+
+/* -- Callouts -- */
+.callout {
+  border-left: 3px solid var(--accent);
+  background: rgba(99,102,241,0.06);
+  padding: 16px 20px;
+  border-radius: 0 8px 8px 0;
+  margin: 16px 0;
+  font-size: 0.9rem;
+  color: var(--text);
+}
+.callout-red {
+  border-left: 3px solid var(--red);
+  background: rgba(248,113,113,0.06);
+  padding: 16px 20px;
+  border-radius: 0 8px 8px 0;
+  margin: 16px 0;
+  font-size: 0.9rem;
+  color: var(--text);
+}
+.callout-green {
+  border-left: 3px solid var(--green);
+  background: rgba(74,222,128,0.06);
+  padding: 16px 20px;
+  border-radius: 0 8px 8px 0;
+  margin: 16px 0;
+  font-size: 0.9rem;
+  color: var(--text);
+}
+.callout-warm {
+  border-left: 3px solid var(--yellow);
+  background: rgba(251,191,36,0.06);
+  padding: 16px 20px;
+  border-radius: 0 8px 8px 0;
+  margin: 16px 0;
+  font-size: 0.9rem;
+  color: var(--text);
+}
+.callout strong, .callout-red strong, .callout-green strong, .callout-warm strong {
+  color: var(--text); font-weight: 600;
+}
+
+/* -- Flow Diagram -- */
+.flow {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0;
+  margin: 20px 0;
+  justify-content: center;
+}
+.flow-step {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 12px 16px;
+  font-size: 0.82rem;
+  text-align: center;
+  min-width: 130px;
+  max-width: 170px;
+  line-height: 1.4;
+}
+.flow-step strong {
+  display: block;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.68rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+.flow-step.pursuer { border-color: var(--accent); }
+.flow-step.pursuer strong { color: var(--accent); }
+.flow-step.withdrawer { border-color: var(--orange); }
+.flow-step.withdrawer strong { color: var(--orange); }
+.flow-arrow {
+  font-size: 1.2rem;
+  color: var(--text2);
+  padding: 0 6px;
+  flex-shrink: 0;
+}
+.flow-loop-label {
+  width: 100%;
+  text-align: center;
+  margin-top: 10px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.7rem;
+  color: var(--text2);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+}
+
+/* -- Tables -- */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+  margin: 16px 0;
+}
+th {
+  text-align: left;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text2);
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--border);
+}
+td {
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--border);
+  color: var(--text2);
+  vertical-align: top;
+}
+tr:hover td { background: rgba(99,102,241,0.04); }
+tr:last-child td { border-bottom: none; }
+
+/* -- Role Cards -- */
+.role-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin: 16px 0;
+}
+.role-card {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 18px;
+}
+.role-card h3 {
+  font-size: 0.95rem;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+.role-card .role-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+.role-card ul {
+  list-style: none;
+  padding: 0;
+}
+.role-card li {
+  font-size: 0.85rem;
+  color: var(--text2);
+  padding: 4px 0;
+  padding-left: 14px;
+  position: relative;
+}
+.role-card li::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 11px;
+  width: 5px; height: 5px;
+  border-radius: 50%;
+}
+.role-pursuer { border-color: var(--accent); }
+.role-pursuer h3 { color: var(--accent); }
+.role-pursuer .role-label { color: var(--accent); }
+.role-pursuer li::before { background: var(--accent); }
+.role-withdrawer { border-color: var(--orange); }
+.role-withdrawer h3 { color: var(--orange); }
+.role-withdrawer .role-label { color: var(--orange); }
+.role-withdrawer li::before { background: var(--orange); }
+
+/* -- Strategy Sections -- */
+.strategy-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.68rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 8px;
+  margin-top: 16px;
+}
+.strategy-label:first-child { margin-top: 0; }
+
+/* -- Footer -- */
+footer {
+  text-align: center;
+  color: var(--text2);
+  font-size: 0.78rem;
+  margin-top: 40px;
+  padding: 24px 2rem;
+  border-top: 1px solid var(--border);
+}
+footer a { color: var(--text2); }
+
+/* -- Responsive -- */
+@media (max-width: 600px) {
+  .nav { padding: 0 1rem; }
+  .nav-links { gap: 0.8rem; }
+  .c { padding: 80px 1.2rem 60px; }
+  .flow { flex-direction: column; }
+  .flow-arrow { transform: rotate(90deg); }
+  .role-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <a href="index.html" class="nav-brand">Marriage Counselling</a>
+  <ul class="nav-links">
+    <li><a href="index.html#patterns">Patterns</a></li>
+    <li><a href="https://github.com/jthorvaldur/marriage-counselling" target="_blank">GitHub</a></li>
+  </ul>
+</nav>
+
+<div class="c">
+
+  <div class="page-header">
+    <div class="page-eyebrow">Communication Pattern</div>
+    <h1>The <strong>Pursue-Withdraw</strong> Cycle</h1>
+    <div class="source">Sue Johnson / Emotionally Focused Therapy (EFT)</div>
+  </div>
+
+  <!-- ============================================ -->
+  <!-- 1. What is the Pursue-Withdraw Cycle         -->
+  <!-- ============================================ -->
+  <h2>What is the Pursue-Withdraw Cycle?</h2>
+  <div class="s">
+    <p>
+      The pursue-withdraw cycle is the most common pattern of distress in romantic relationships. Identified through decades of research by Sue Johnson and the Emotionally Focused Therapy tradition, it describes a self-reinforcing loop where one partner escalates attempts to connect while the other retreats from the intensity of those attempts.
+    </p>
+    <p>
+      From an attachment theory perspective, both partners are doing the same thing: trying to manage their fear. The pursuer fears that the relationship is slipping away and reaches harder. The withdrawer fears that engaging will make things worse and pulls back. Both are survival strategies. Neither is a character flaw.
+    </p>
+    <div class="callout">
+      <strong>Attachment context.</strong> John Bowlby's attachment theory shows that the need for a secure bond with a primary partner is not weakness or dependency — it is a basic biological drive. When that bond feels threatened, both pursuit and withdrawal are protest behaviours: different forms of the same alarm signal that the connection is under threat.
+    </div>
+    <p>
+      Research estimates that the pursue-withdraw pattern appears in roughly 60-70% of distressed couples, making it the single most prevalent relational dynamic that therapists encounter. It can occur regardless of gender, though cultural conditioning may influence which partner takes which role.
+    </p>
+  </div>
+
+  <!-- ============================================ -->
+  <!-- 2. The Cycle Diagram                         -->
+  <!-- ============================================ -->
+  <h2>The Cycle</h2>
+  <div class="s">
+    <p>Each step in the cycle triggers the next. The loop has no natural exit point without deliberate intervention.</p>
+
+    <div class="flow">
+      <div class="flow-step pursuer">
+        <strong>Pursuer</strong>
+        Feels disconnected, senses distance
+      </div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-step pursuer">
+        <strong>Pursuer</strong>
+        Escalates: criticism, demands, intensity
+      </div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-step withdrawer">
+        <strong>Withdrawer</strong>
+        Feels overwhelmed, flooded
+      </div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-step withdrawer">
+        <strong>Withdrawer</strong>
+        Shuts down: silence, leaving, topic change
+      </div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-step pursuer">
+        <strong>Pursuer</strong>
+        Feels more disconnected
+      </div>
+      <div class="flow-loop-label">&circlearrowleft; cycle repeats</div>
+    </div>
+
+    <div class="callout-warm">
+      <strong>The trap.</strong> The pursuer's strategy (escalate to get a response) is perfectly designed to trigger the withdrawer's defence (shut down to avoid conflict). The withdrawer's strategy (go quiet to reduce tension) is perfectly designed to trigger the pursuer's deepest fear (abandonment). Neither partner is wrong. The cycle is the problem.
+    </div>
+  </div>
+
+  <!-- ============================================ -->
+  <!-- 3. Both Roles Explained                      -->
+  <!-- ============================================ -->
+  <h2>Understanding Both Roles</h2>
+  <div class="s">
+    <p>Neither role is healthier than the other. Both are adaptive responses to attachment threat. The descriptions below are not diagnoses — they are positions that either partner can occupy, and roles can even switch depending on the topic.</p>
+
+    <div class="role-grid">
+      <div class="role-card role-pursuer">
+        <div class="role-label">The Pursuer</div>
+        <h3>What they feel</h3>
+        <ul>
+          <li>Fear of abandonment or being unimportant</li>
+          <li>Loneliness within the relationship</li>
+          <li>Anxiety that silence means the partner has checked out</li>
+          <li>Urgency — the issue needs to be resolved now</li>
+        </ul>
+        <h3>What they do</h3>
+        <ul>
+          <li>Raise issues repeatedly, sometimes with increasing intensity</li>
+          <li>Criticise or blame to provoke a reaction</li>
+          <li>Follow the partner from room to room</li>
+          <li>Send multiple messages without waiting for a reply</li>
+        </ul>
+        <h3>What they need</h3>
+        <ul>
+          <li>Reassurance that the partner is still emotionally present</li>
+          <li>A signal that the issue will not be ignored forever</li>
+          <li>Evidence that the relationship matters to the other person</li>
+        </ul>
+      </div>
+
+      <div class="role-card role-withdrawer">
+        <div class="role-label">The Withdrawer</div>
+        <h3>What they feel</h3>
+        <ul>
+          <li>Overwhelmed by the intensity of the interaction</li>
+          <li>Physiologically flooded (elevated heart rate, shallow breathing)</li>
+          <li>Fear that engaging will only make things worse</li>
+          <li>A sense of failure — nothing they say is the right thing</li>
+        </ul>
+        <h3>What they do</h3>
+        <ul>
+          <li>Go silent or give minimal responses</li>
+          <li>Leave the room or change the subject</li>
+          <li>Agree superficially just to end the conversation</li>
+          <li>Become emotionally flat or detached</li>
+        </ul>
+        <h3>What they need</h3>
+        <ul>
+          <li>Space to process before responding</li>
+          <li>Lower emotional intensity in the conversation</li>
+          <li>Reassurance that they are not being judged as defective</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="callout-green">
+      <strong>Neither role is the villain. Both partners are caught in the same loop.</strong> The pursuer is not "too needy" and the withdrawer is not "emotionally unavailable." Both are reacting to a perceived threat to the bond. The cycle itself is the adversary, not either person in it.
+    </div>
+  </div>
+
+  <!-- ============================================ -->
+  <!-- 4. Why It Self-Reinforces                    -->
+  <!-- ============================================ -->
+  <h2>Why the Cycle Self-Reinforces</h2>
+  <div class="s">
+    <p>
+      The pursue-withdraw cycle is remarkably stable because each partner's coping strategy validates the other partner's fear. This creates a closed feedback loop with no natural stopping point.
+    </p>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Partner</th>
+          <th>Strategy</th>
+          <th>Intended effect</th>
+          <th>Actual effect on the other</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Pursuer</td>
+          <td>Escalate to get a response</td>
+          <td>"If I push hard enough, they will engage"</td>
+          <td>Withdrawer feels more overwhelmed, retreats further</td>
+        </tr>
+        <tr>
+          <td>Withdrawer</td>
+          <td>Shut down to reduce conflict</td>
+          <td>"If I go quiet, things will calm down"</td>
+          <td>Pursuer feels more abandoned, escalates further</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p>
+      Over time, each partner develops a story about the other that reinforces the cycle. The pursuer begins to believe: "They don't care about me or this relationship." The withdrawer begins to believe: "Nothing I do is ever enough." Both stories feel true from the inside — and both are incomplete.
+    </p>
+    <p>
+      Gottman's physiological research adds another layer. The withdrawer is often in a state of physiological flooding — heart rate above 100 BPM, stress hormones elevated — which makes it literally impossible to process complex emotional information. Withdrawal is not a choice in that state; it is the nervous system's emergency shutdown. Meanwhile, the pursuer's alarm system is reading the withdrawal as a threat signal, driving protest behaviour that is equally involuntary.
+    </p>
+
+    <div class="callout-red">
+      <strong>Escalation risk.</strong> Left uninterrupted, the pursue-withdraw cycle tends to intensify over months and years. The pursuer's bids become more critical, the withdrawer's retreats become more total, and both partners accumulate resentment. Research by Christensen and Heavey (1990) found that this pattern is one of the strongest predictors of relationship deterioration and eventual dissolution.
+    </div>
+  </div>
+
+  <!-- ============================================ -->
+  <!-- 5. How It Shows Up in Text Communication     -->
+  <!-- ============================================ -->
+  <h2>How It Shows Up in Text Communication</h2>
+  <div class="s">
+    <p>
+      Digital communication amplifies the pursue-withdraw cycle because text strips out tone, facial expression, and body language. What remains is raw content — and gaps. Silence in person can feel uncomfortable. Silence over text becomes a screen full of unanswered messages.
+    </p>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Signal</th>
+          <th>Pursuit indicator</th>
+          <th>Withdrawal indicator</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Message frequency</td>
+          <td>Rapid-fire messages, multiple in a row without reply</td>
+          <td>Long gaps between responses, hours or days of silence</td>
+        </tr>
+        <tr>
+          <td>Message length</td>
+          <td>Long messages that cover multiple issues at once</td>
+          <td>One-word replies: "fine," "ok," "sure"</td>
+        </tr>
+        <tr>
+          <td>Read receipts</td>
+          <td>Monitoring when a message was read and noting the gap</td>
+          <td>Reading without responding (seen as deliberate ignoring)</td>
+        </tr>
+        <tr>
+          <td>Topic management</td>
+          <td>Returning to unresolved issues across multiple conversations</td>
+          <td>Changing the subject to something neutral or logistical</td>
+        </tr>
+        <tr>
+          <td>Tone escalation</td>
+          <td>Caps, exclamation marks, increasingly direct language</td>
+          <td>Flat or formal tone, removal of warmth cues (no emojis, short sentences)</td>
+        </tr>
+        <tr>
+          <td>Channel switching</td>
+          <td>"Are you ignoring my texts?" — moving to calls, voicemails</td>
+          <td>Preferring text over calls because it feels less intense</td>
+        </tr>
+        <tr>
+          <td>Timestamps</td>
+          <td>Messages sent late at night or early morning (urgency signal)</td>
+          <td>Responding only during "safe" hours (work breaks, low-stakes times)</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="callout">
+      <strong>The read-receipt trap.</strong> Read receipts create a particularly painful version of the cycle. The pursuer sees the message was read and interprets no reply as rejection. The withdrawer saw the message, felt flooded, and is trying to collect their thoughts before responding — but the lack of response is already being read as evidence of not caring. A three-minute pause, invisible in person, becomes a wound in text.
+    </div>
+  </div>
+
+  <!-- ============================================ -->
+  <!-- 6. Interrupting the Cycle                    -->
+  <!-- ============================================ -->
+  <h2>Interrupting the Cycle</h2>
+  <div class="s">
+    <p>
+      The following strategies come from Emotionally Focused Therapy (Johnson, 2004) and related attachment-based research. The goal is not to eliminate pursuit or withdrawal — both are natural responses — but to slow the cycle enough that each partner can respond rather than react.
+    </p>
+
+    <div class="strategy-label">For the pursuer</div>
+    <ul>
+      <li><strong>Soften the startup.</strong> Instead of leading with criticism ("You never listen to me"), lead with the vulnerable feeling underneath ("I feel alone when I can't reach you, and it scares me").</li>
+      <li><strong>Name the cycle, not the partner.</strong> "I think we're in the cycle again" is easier to hear than "You're shutting down on me again."</li>
+      <li><strong>Make one bid and wait.</strong> Sending five messages in a row does not increase the chance of connection. Send one clear message about what you feel and what you need, then give space for a response.</li>
+      <li><strong>Tolerate the gap.</strong> Silence does not necessarily mean rejection. Your partner may need processing time. Agree on a timeframe together: "Can we come back to this in an hour?"</li>
+    </ul>
+
+    <div class="strategy-label">For the withdrawer</div>
+    <ul>
+      <li><strong>Signal, don't disappear.</strong> The difference between "I need to step away" and simply going silent is enormous. Even a brief message — "I'm overwhelmed right now but I'm not leaving this conversation" — can interrupt the pursuer's alarm.</li>
+      <li><strong>Ask for time, don't take it unilaterally.</strong> "I need 30 minutes to think about this" is very different from vanishing. The first is a bridge; the second confirms the pursuer's worst fear.</li>
+      <li><strong>Return when you said you would.</strong> If you asked for an hour, come back in an hour. Reliability builds the trust that makes future space-requests feel safe rather than threatening.</li>
+      <li><strong>Start small.</strong> You do not need to have the whole answer. "I don't know what I feel yet, but I heard you" is a valid response that keeps the connection alive.</li>
+    </ul>
+
+    <div class="strategy-label">Together</div>
+    <ul>
+      <li><strong>Name the cycle as the enemy.</strong> "The cycle got us again" externalises the pattern. It is no longer Partner A attacking Partner B — it is both partners noticing a dynamic that hijacks them both.</li>
+      <li><strong>Agree on a signal.</strong> Some couples use a word or phrase that means "I notice we're in the loop." This interrupts the automatic escalation without blame.</li>
+      <li><strong>Debrief after, not during.</strong> Once the cycle has de-escalated, talk about what happened. "When I sent those five messages, what did that feel like for you?" builds understanding for next time.</li>
+      <li><strong>Recognise role fluidity.</strong> You are not permanently assigned to a role. On some topics, the usual pursuer may withdraw. Noticing this flexibility makes the pattern feel less like identity and more like a weather system that passes through.</li>
+    </ul>
+
+    <div class="callout-green">
+      <strong>The goal is not to stop caring or stop needing space.</strong> It is to find ways to pursue that do not overwhelm, and ways to withdraw that do not abandon. Both partners deserve to have their needs met. The cycle makes it impossible; interrupting the cycle makes it possible again.
+    </div>
+  </div>
+
+  <!-- ============================================ -->
+  <!-- 7. Key Research                              -->
+  <!-- ============================================ -->
+  <h2>Key Research</h2>
+  <div class="s">
+    <table>
+      <thead>
+        <tr>
+          <th>Source</th>
+          <th>Contribution</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Johnson, S. (2004). <em>The Practice of Emotionally Focused Couple Therapy</em></td>
+          <td>Foundational EFT framework; describes the pursue-withdraw cycle as the core negative interaction pattern and outlines the three-stage change process</td>
+        </tr>
+        <tr>
+          <td>Christensen, A. &amp; Heavey, C. (1990)</td>
+          <td>Empirical evidence that the demand-withdraw pattern predicts relationship deterioration over time</td>
+        </tr>
+        <tr>
+          <td>Gottman, J. (1994). <em>What Predicts Divorce</em></td>
+          <td>Physiological flooding research showing that withdrawal is often an involuntary nervous-system response, not a deliberate choice</td>
+        </tr>
+        <tr>
+          <td>Bowlby, J. (1969). <em>Attachment and Loss</em></td>
+          <td>Attachment theory foundation: the biological basis of the need for secure bonding with a primary partner</td>
+        </tr>
+        <tr>
+          <td>Eldridge, K. &amp; Christensen, A. (2002)</td>
+          <td>Meta-analysis of demand-withdraw patterns across gender and culture, finding the pattern is universal though its expression varies</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+</div>
+
+<footer>
+  Communication Pattern Library &mdash; Prevention, not prosecution.
+</footer>
+
+</body>
+</html>

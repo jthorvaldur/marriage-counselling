@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Four Horsemen — Communication Pattern Library</title>
+<meta name="description" content="Gottman's Four Horsemen of the Apocalypse: Criticism, Contempt, Defensiveness, Stonewalling. Evidence-based guide to recognizing and interrupting destructive communication patterns.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@200;300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0f172a;
+  --card: #1e293b;
+  --border: #334155;
+  --text: #f1f5f9;
+  --text2: #94a3b8;
+  --accent: #6366f1;
+  --accent-glow: rgba(99,102,241,0.15);
+  --red: #f87171;
+  --green: #4ade80;
+  --yellow: #fbbf24;
+  --orange: #fb923c;
+  --purple: #c084fc;
+  --teal: #2dd4bf;
+}
+@media (prefers-color-scheme: light) {
+  :root {
+    --bg: #f0f2f5; --card: #fff; --border: #e5e7eb;
+    --text: #1a1a2e; --text2: #6b7280;
+    --accent-glow: rgba(99,102,241,0.08);
+  }
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: 'Outfit', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── Nav ── */
+.nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 50;
+  padding: 0 2rem; height: 56px;
+  display: flex; align-items: center; justify-content: space-between;
+  background: rgba(15,23,42,0.85);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border);
+}
+.nav-brand {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.72rem; font-weight: 600;
+  letter-spacing: 0.2em; text-transform: uppercase;
+  color: var(--accent); text-decoration: none;
+}
+.nav-links { display: flex; gap: 1.5rem; list-style: none; }
+.nav-links a {
+  font-size: 0.78rem; font-weight: 400;
+  color: var(--text2); text-decoration: none;
+  transition: color 0.2s;
+}
+.nav-links a:hover { color: var(--text); }
+
+/* ── Container ── */
+.c { max-width: 820px; margin: 0 auto; padding: 100px 2rem 80px; }
+
+/* ── Page Header ── */
+.page-header {
+  margin-bottom: 48px;
+}
+.page-eyebrow {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.65rem; letter-spacing: 0.3em;
+  text-transform: uppercase; color: var(--yellow);
+  margin-bottom: 12px;
+}
+.page-header h1 {
+  font-size: clamp(1.6rem, 3.5vw, 2.4rem);
+  font-weight: 300; letter-spacing: -0.01em;
+  line-height: 1.25; margin-bottom: 8px;
+}
+.page-header h1 strong { font-weight: 600; }
+.page-header .subtitle {
+  color: var(--text2); font-size: 0.95rem;
+  max-width: 600px;
+}
+
+/* ── Section Headers ── */
+h2 {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 10px 10px 0 0;
+  padding: 16px 22px;
+  font-size: 1.1rem; font-weight: 600;
+  margin-top: 40px;
+}
+.s {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-top: none;
+  border-radius: 0 0 10px 10px;
+  padding: 22px;
+  margin-bottom: 24px;
+}
+.s p { margin-bottom: 14px; font-size: 0.92rem; color: var(--text); }
+.s p:last-child { margin-bottom: 0; }
+.s ul, .s ol { margin: 10px 0 14px 20px; font-size: 0.92rem; }
+.s li { margin-bottom: 6px; }
+
+/* ── Callouts ── */
+.callout {
+  border-left: 3px solid var(--accent);
+  background: rgba(99,102,241,0.06);
+  padding: 16px 20px;
+  border-radius: 0 8px 8px 0;
+  margin: 18px 0;
+  font-size: 0.88rem;
+}
+.callout-red {
+  border-left: 3px solid var(--red);
+  background: rgba(248,113,113,0.06);
+  padding: 16px 20px;
+  border-radius: 0 8px 8px 0;
+  margin: 18px 0;
+  font-size: 0.88rem;
+}
+.callout-green {
+  border-left: 3px solid var(--green);
+  background: rgba(74,222,128,0.06);
+  padding: 16px 20px;
+  border-radius: 0 8px 8px 0;
+  margin: 18px 0;
+  font-size: 0.88rem;
+}
+.callout-warm {
+  border-left: 3px solid var(--yellow);
+  background: rgba(251,191,36,0.06);
+  padding: 16px 20px;
+  border-radius: 0 8px 8px 0;
+  margin: 18px 0;
+  font-size: 0.88rem;
+}
+.callout strong, .callout-red strong, .callout-green strong, .callout-warm strong {
+  display: block; margin-bottom: 6px;
+}
+
+/* ── Tables ── */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+  margin: 16px 0;
+}
+thead th {
+  text-align: left;
+  padding: 10px 14px;
+  background: var(--card);
+  border-bottom: 2px solid var(--border);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text2);
+  font-weight: 500;
+}
+tbody td {
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--border);
+  vertical-align: top;
+}
+tbody tr:hover { background: rgba(99,102,241,0.04); }
+tbody tr:last-child td { border-bottom: none; }
+
+/* ── Flow Diagrams ── */
+.flow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 0;
+  margin: 20px 0;
+  padding: 12px 0;
+}
+.flow-step {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 14px 18px;
+  text-align: center;
+  min-width: 120px;
+  flex: 0 1 auto;
+}
+.flow-step .label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.68rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text2);
+  margin-bottom: 4px;
+}
+.flow-step .value {
+  font-size: 0.88rem;
+  font-weight: 500;
+}
+.flow-arrow {
+  font-size: 1.2rem;
+  color: var(--text2);
+  padding: 0 8px;
+  flex-shrink: 0;
+}
+
+/* ── Horseman Label ── */
+.horseman-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  display: flex; align-items: center; gap: 10px;
+  margin: 48px 0 0;
+  padding-bottom: 8px;
+}
+.horseman-label::after {
+  content: ''; flex: 1;
+  height: 1px; background: var(--border);
+}
+
+/* ── Example Quotes ── */
+.example {
+  font-style: italic;
+  color: var(--text2);
+  padding-left: 16px;
+  border-left: 2px solid var(--border);
+  margin: 10px 0;
+  font-size: 0.88rem;
+}
+
+/* ── Antidote block ── */
+.antidote-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--green);
+  margin-top: 16px;
+  margin-bottom: 6px;
+}
+
+/* ── Footer ── */
+footer {
+  text-align: center;
+  color: var(--text2);
+  font-size: 0.78rem;
+  margin-top: 40px;
+  padding: 24px 2rem;
+  border-top: 1px solid var(--border);
+}
+footer a { color: var(--text2); }
+
+/* ── Responsive ── */
+@media (max-width: 600px) {
+  .nav { padding: 0 1rem; }
+  .nav-links { gap: 0.8rem; }
+  .c { padding: 90px 1.2rem 60px; }
+  .flow { flex-direction: column; }
+  .flow-arrow { transform: rotate(90deg); padding: 4px 0; }
+  table { font-size: 12px; }
+  thead th, tbody td { padding: 8px 10px; }
+}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <a href="index.html" class="nav-brand">Marriage Counselling</a>
+  <ul class="nav-links">
+    <li><a href="index.html#patterns">Patterns</a></li>
+    <li><a href="https://github.com/jthorvaldur/marriage-counselling" target="_blank">GitHub</a></li>
+  </ul>
+</nav>
+
+<div class="c">
+
+  <!-- Page Header -->
+  <div class="page-header">
+    <div class="page-eyebrow">Communication Pattern &mdash; Gottman, 1994</div>
+    <h1>The Four Horsemen <strong>of the Apocalypse</strong></h1>
+    <p class="subtitle">Four communication behaviours that predict relationship breakdown. Identified through over 40 years of research at the Gottman Institute. Each one has a research-backed antidote.</p>
+  </div>
+
+  <!-- ──────────────────────────────────────── -->
+  <!-- OVERVIEW -->
+  <!-- ──────────────────────────────────────── -->
+
+  <h2>Overview</h2>
+  <div class="s">
+    <p>In 1994, Dr. John Gottman and Dr. Robert Levenson published research showing that four specific communication behaviours could predict whether a couple would divorce with 93.6% accuracy. They called these behaviours the <strong>Four Horsemen of the Apocalypse</strong> &mdash; Criticism, Contempt, Defensiveness, and Stonewalling.</p>
+    <p>The research was drawn from Gottman's "Love Lab" at the University of Washington, where couples were observed during conflict conversations. Physiological responses, facial expressions, and verbal patterns were tracked over time and correlated with relationship outcomes measured years later.</p>
+    <p>The horsemen are not occasional slip-ups. Every couple engages in these behaviours from time to time. What matters is the <em>frequency</em>, the <em>intensity</em>, and whether the couple has effective <em>repair attempts</em> to counteract them. When these behaviours become the default mode of conflict, the relationship is in serious trouble.</p>
+
+    <div class="callout-green">
+      <strong>Both partners contribute to the pattern.</strong>
+      The goal is not to identify who is worse &mdash; it is to interrupt the cycle together. The horsemen are relational behaviours, not personality traits. They emerge between people, and they can be changed by both people.
+    </div>
+  </div>
+
+  <!-- ──────────────────────────────────────── -->
+  <!-- HORSEMAN 1: CRITICISM -->
+  <!-- ──────────────────────────────────────── -->
+
+  <div class="horseman-label" style="color: var(--red);">Horseman 1</div>
+
+  <h2>Criticism</h2>
+  <div class="s">
+    <p>Criticism is different from a complaint. A <strong>complaint</strong> addresses a specific behaviour: "I was upset that you didn't call when you said you would." <strong>Criticism</strong> attacks the person's character: "You never think about anyone but yourself. You're so selfish."</p>
+    <p>The difference is the shift from "this thing that happened" to "this is who you are." Criticism uses words like <em>always</em>, <em>never</em>, and <em>you are</em> rather than <em>I feel</em> or <em>this situation</em>.</p>
+
+    <p><strong>What it sounds like:</strong></p>
+    <div class="example">"You always forget about what matters to me. You just don't care."</div>
+    <div class="example">"Why are you so irresponsible? You never follow through on anything."</div>
+    <div class="example">"What's wrong with you? A normal person would have handled that differently."</div>
+
+    <p><strong>What it looks like in text/email:</strong></p>
+    <ul>
+      <li>Messages that begin with "You always..." or "You never..."</li>
+      <li>Character judgments rather than descriptions of specific events</li>
+      <li>Sweeping generalisations about the other person's nature</li>
+      <li>Bringing up past grievances unrelated to the current issue</li>
+    </ul>
+
+    <div class="callout-red">
+      <strong>Why it matters.</strong>
+      Criticism is often the entry point for the other three horsemen. When one partner feels their character is under attack, the natural response is defensiveness &mdash; which sets the cascade in motion.
+    </div>
+
+    <div class="antidote-label">Antidote: Gentle Startup</div>
+    <p>Instead of launching into what is wrong with the other person, describe the specific situation and your own feelings about it. Use "I" statements focused on a concrete behaviour.</p>
+    <div class="example">"I felt worried when I didn't hear from you last night. Can we talk about how to handle that?"</div>
+    <p>The structure is: <strong>I feel [emotion] about [specific situation]</strong> and <strong>I need [concrete request]</strong>. This gives your partner something they can actually respond to, rather than a character indictment they can only defend against.</p>
+  </div>
+
+  <!-- ──────────────────────────────────────── -->
+  <!-- HORSEMAN 2: CONTEMPT -->
+  <!-- ──────────────────────────────────────── -->
+
+  <div class="horseman-label" style="color: var(--orange);">Horseman 2</div>
+
+  <h2>Contempt</h2>
+  <div class="s">
+    <p>Contempt is the single greatest predictor of divorce in Gottman's research. It goes beyond criticism by communicating <strong>disgust</strong> and <strong>moral superiority</strong>. The person expressing contempt positions themselves as fundamentally better than their partner.</p>
+    <p>Contempt includes sarcasm, name-calling, eye-rolling, mockery, hostile humour, and sneering. It communicates: "I don't just disagree with you &mdash; I look down on you."</p>
+
+    <p><strong>What it sounds like:</strong></p>
+    <div class="example">"Oh, you're tired? Try doing what I do all day. You have no idea what real work looks like."</div>
+    <div class="example">"That's the most ridiculous thing I've ever heard. I can't believe I married someone who thinks like that."</div>
+    <div class="example">"Good luck figuring that out on your own. We both know how that usually goes."</div>
+
+    <p><strong>What it looks like in text/email:</strong></p>
+    <ul>
+      <li>Sarcastic responses that mock the other person's intelligence or competence</li>
+      <li>Messages dripping with superiority ("Let me explain this to you simply...")</li>
+      <li>Dismissive one-word replies to earnest messages ("Sure." "Whatever." "K.")</li>
+      <li>Sharing the partner's messages with others to ridicule them</li>
+    </ul>
+
+    <div class="callout-warm">
+      <strong>Contempt grows in unspoken resentment.</strong>
+      Gottman's research shows that contempt builds over time from unresolved grievances. It is fuelled by long-simmering negative thoughts about the partner. By the time contempt surfaces, the underlying resentment has usually been building for months or years.
+    </div>
+
+    <div class="antidote-label">Antidote: Build a Culture of Appreciation</div>
+    <p>The antidote to contempt is not a single technique but a shift in perspective. Gottman's research found that couples who maintain a ratio of at least <strong>5 positive interactions to every 1 negative interaction</strong> during conflict are far more resilient.</p>
+    <p>Actively express appreciation, gratitude, and respect &mdash; especially during calm moments. This builds a buffer that prevents contempt from taking root. When you notice yourself feeling superior, it is a signal that unexpressed needs or resentments need to be addressed directly.</p>
+  </div>
+
+  <!-- ──────────────────────────────────────── -->
+  <!-- HORSEMAN 3: DEFENSIVENESS -->
+  <!-- ──────────────────────────────────────── -->
+
+  <div class="horseman-label" style="color: var(--yellow);">Horseman 3</div>
+
+  <h2>Defensiveness</h2>
+  <div class="s">
+    <p>Defensiveness is a natural response to feeling attacked &mdash; it is self-protection. But in the context of the Four Horsemen, it becomes a pattern that blocks conflict resolution. Defensiveness says: "The problem is not me. It is you." It reverses the complaint back onto the person who raised it.</p>
+    <p>Defensiveness takes many forms: making excuses, cross-complaining (responding to a complaint with a different complaint), playing the innocent victim, and "yes-but" responses that technically acknowledge the concern while rejecting responsibility.</p>
+
+    <p><strong>What it sounds like:</strong></p>
+    <div class="example">"It's not my fault we were late. If you had been ready on time, we would have left earlier."</div>
+    <div class="example">"I only did that because you did [other thing] first."</div>
+    <div class="example">"Why are you attacking me? I was just trying to help."</div>
+
+    <p><strong>What it looks like in text/email:</strong></p>
+    <ul>
+      <li>Every response to a concern includes a counter-accusation</li>
+      <li>Long messages cataloguing everything the other person has done wrong</li>
+      <li>"I wouldn't have done X if you hadn't done Y" constructions</li>
+      <li>Immediately shifting the topic to the other person's behaviour</li>
+    </ul>
+
+    <div class="callout">
+      <strong>Defensiveness is almost universal.</strong>
+      Most people become defensive when they feel criticised. The difference is between an occasional defensive moment and a pattern where no complaint ever gets acknowledged. When defensiveness is the default, neither partner's concerns ever get heard.
+    </div>
+
+    <div class="antidote-label">Antidote: Take Responsibility</div>
+    <p>Even if only a small part of the complaint is valid, acknowledge that part. You do not have to agree with everything to accept some responsibility. A partial acknowledgment goes much further than a total rejection.</p>
+    <div class="example">"You're right, I should have called. I got caught up and lost track of time. I'm sorry."</div>
+    <p>This does not mean accepting blame for things that are not your fault. It means being willing to see your partner's perspective and own your part of the interaction, however small.</p>
+  </div>
+
+  <!-- ──────────────────────────────────────── -->
+  <!-- HORSEMAN 4: STONEWALLING -->
+  <!-- ──────────────────────────────────────── -->
+
+  <div class="horseman-label" style="color: var(--text2);">Horseman 4</div>
+
+  <h2>Stonewalling</h2>
+  <div class="s">
+    <p>Stonewalling occurs when one partner withdraws from the interaction entirely. They stop responding, look away, act busy, or simply disengage. It is the emotional equivalent of putting up a wall.</p>
+    <p>Stonewalling is usually a response to <strong>physiological flooding</strong> &mdash; the person's heart rate exceeds 100 bpm, adrenaline spikes, and the rational brain goes offline. At that point, continuing the conversation is genuinely impossible. The person shuts down not out of malice but because their nervous system has been overwhelmed.</p>
+    <p>In Gottman's research, stonewalling is more common in men (85% of stonewallers in his studies), though it is not exclusive to any gender.</p>
+
+    <p><strong>What it sounds like:</strong></p>
+    <div class="example">"I have nothing to say."</div>
+    <div class="example">"Whatever you want." (delivered flatly, with disengagement)</div>
+    <div class="example">Complete silence, walking away, or leaving the room during a conversation.</div>
+
+    <p><strong>What it looks like in text/email:</strong></p>
+    <ul>
+      <li>Messages left on read for hours or days during an active disagreement</li>
+      <li>One-word replies that signal withdrawal: "Fine." "Ok." "Sure."</li>
+      <li>Refusing to engage with the topic: "I'm not doing this right now."</li>
+      <li>Disappearing from communication entirely during conflict</li>
+    </ul>
+
+    <div class="callout-warm">
+      <strong>Stonewalling is not the same as taking a break.</strong>
+      A healthy break is communicated ("I need 20 minutes to calm down, then let's come back to this"). Stonewalling is unilateral withdrawal with no commitment to return. One is repair; the other is abandonment of the conversation.
+    </div>
+
+    <div class="antidote-label">Antidote: Physiological Self-Soothing</div>
+    <p>When you notice flooding (racing heart, shallow breathing, feeling overwhelmed), call a structured break. Gottman recommends at least <strong>20 minutes</strong>, because that is roughly how long it takes for stress hormones to clear.</p>
+    <p>During the break, avoid rehearsing the argument or building your case. Instead, do something physically calming: walk, breathe deeply, listen to music. Then return to the conversation as agreed. The key is the explicit agreement to come back.</p>
+    <div class="example">"I can feel myself shutting down. I need to take a break for 20 minutes. I want to finish this conversation &mdash; I just need to calm down first."</div>
+  </div>
+
+  <!-- ──────────────────────────────────────── -->
+  <!-- COMPARISON TABLE -->
+  <!-- ──────────────────────────────────────── -->
+
+  <h2>Comparison: All Four Horsemen</h2>
+  <div class="s">
+    <p>Each horseman has a distinct behaviour, a distinct impact on the relationship, and a research-backed antidote.</p>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Horseman</th>
+          <th>The Behaviour</th>
+          <th>The Impact</th>
+          <th>The Antidote</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td style="color: var(--red); font-weight: 500;">Criticism</td>
+          <td>Attacking the partner's character rather than addressing a specific behaviour</td>
+          <td>Partner feels fundamentally flawed, not just wrong about one thing</td>
+          <td>Gentle Startup &mdash; "I feel... about... I need..."</td>
+        </tr>
+        <tr>
+          <td style="color: var(--orange); font-weight: 500;">Contempt</td>
+          <td>Communicating disgust, superiority, or mockery toward the partner</td>
+          <td>Partner feels worthless; erodes sense of being valued in the relationship</td>
+          <td>Build Culture of Appreciation &mdash; 5:1 positive-to-negative ratio</td>
+        </tr>
+        <tr>
+          <td style="color: var(--yellow); font-weight: 500;">Defensiveness</td>
+          <td>Deflecting responsibility, counter-attacking, playing the victim</td>
+          <td>The original concern is never addressed; conflict escalates</td>
+          <td>Take Responsibility &mdash; acknowledge even a small part</td>
+        </tr>
+        <tr>
+          <td style="color: var(--text2); font-weight: 500;">Stonewalling</td>
+          <td>Withdrawing from the interaction entirely, refusing to engage</td>
+          <td>Partner feels abandoned; unresolved issues compound over time</td>
+          <td>Physiological Self-Soothing &mdash; structured 20-min break</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ──────────────────────────────────────── -->
+  <!-- ESCALATION CASCADE -->
+  <!-- ──────────────────────────────────────── -->
+
+  <h2>The Escalation Cascade</h2>
+  <div class="s">
+    <p>The Four Horsemen rarely appear in isolation. Gottman's research shows they tend to emerge in a predictable sequence, each one triggering the next. What starts as a complaint can escalate through all four stages if there is no successful repair attempt along the way.</p>
+
+    <div class="flow">
+      <div class="flow-step">
+        <div class="label" style="color: var(--red);">Stage 1</div>
+        <div class="value">Criticism</div>
+      </div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-step">
+        <div class="label" style="color: var(--yellow);">Stage 2</div>
+        <div class="value">Defensiveness</div>
+      </div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-step">
+        <div class="label" style="color: var(--orange);">Stage 3</div>
+        <div class="value">Contempt</div>
+      </div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-step">
+        <div class="label" style="color: var(--text2);">Stage 4</div>
+        <div class="value">Stonewalling</div>
+      </div>
+    </div>
+
+    <p><strong>How the cascade works:</strong></p>
+    <ol>
+      <li><strong>Criticism</strong> opens the interaction with a character attack rather than a specific complaint. The receiving partner feels they are being told something is fundamentally wrong with them.</li>
+      <li><strong>Defensiveness</strong> is the natural response. The receiving partner protects themselves by deflecting, counter-attacking, or refusing responsibility. The original concern goes unaddressed.</li>
+      <li><strong>Contempt</strong> emerges when the cycle has repeated many times. Unresolved resentment curdles into disgust. The criticising partner no longer just complains &mdash; they express moral superiority.</li>
+      <li><strong>Stonewalling</strong> is the final stage. The receiving partner's nervous system is overwhelmed. They shut down entirely. Communication stops.</li>
+    </ol>
+
+    <div class="callout">
+      <strong>Repair attempts are the key.</strong>
+      Gottman found that the difference between stable and unstable couples was not the absence of the horsemen but the presence of effective repair attempts. A repair attempt is any statement or action that prevents the cascade from escalating further &mdash; humour, an apology, a touch, a de-escalation. When repair attempts are consistently rejected, the cascade accelerates.
+    </div>
+  </div>
+
+  <!-- ──────────────────────────────────────── -->
+  <!-- WHAT THE RESEARCH SAYS -->
+  <!-- ──────────────────────────────────────── -->
+
+  <h2>What the Research Says</h2>
+  <div class="s">
+    <p>The Four Horsemen model is one of the most extensively studied frameworks in relationship psychology. Key findings from the Gottman Institute and related research include:</p>
+
+    <ul>
+      <li><strong>93.6% prediction accuracy.</strong> In a 1992 study, Gottman and Levenson predicted which couples would divorce within a 6-year follow-up period with 93.6% accuracy based on the presence and intensity of the Four Horsemen during a 15-minute conflict conversation.</li>
+      <li><strong>The 5:1 ratio.</strong> Stable relationships maintain a ratio of at least 5 positive interactions to every 1 negative interaction during conflict. Couples heading toward divorce typically show a ratio at or below 0.8:1.</li>
+      <li><strong>Contempt is the strongest predictor.</strong> Among the four horsemen, contempt has the highest correlation with relationship dissolution. It is also correlated with weakened immune function in the receiving partner (research published in <em>Psychosomatic Medicine</em>, 1994).</li>
+      <li><strong>Flooding has a physiological threshold.</strong> Stonewalling typically occurs when heart rate exceeds 100 bpm during conflict (Diffuse Physiological Arousal). At this point, the person cannot process new information or respond constructively.</li>
+      <li><strong>Gender patterns in the cascade.</strong> In heterosexual couples studied, women were more likely to use criticism as the entry point, and men were more likely to stonewall. These are statistical tendencies, not rules &mdash; either partner can exhibit any horseman.</li>
+      <li><strong>The patterns are changeable.</strong> Gottman Method Couples Therapy, which directly targets the Four Horsemen and their antidotes, has shown positive outcomes in multiple clinical trials. The horsemen are behaviours, not fixed traits.</li>
+    </ul>
+
+    <div class="callout-green">
+      <strong>The research is clear on one point.</strong>
+      These patterns predict outcomes at the couple level, not the individual level. They are interaction patterns &mdash; cycles that both partners contribute to and that both partners can interrupt. Labelling one partner as "the criticiser" or "the stonewaller" misses the point. The cycle is the problem, and breaking it requires both people.
+    </div>
+  </div>
+
+  <!-- ──────────────────────────────────────── -->
+  <!-- RECOGNISING THE PATTERN -->
+  <!-- ──────────────────────────────────────── -->
+
+  <h2>Recognising the Pattern in Your Communication</h2>
+  <div class="s">
+    <p>Awareness is the first step. The following questions can help you and your partner notice when the horsemen are present:</p>
+
+    <ul>
+      <li>When you raise a concern, do you describe a specific situation, or do you make a statement about your partner's character?</li>
+      <li>When your partner raises a concern, is your first impulse to explain why it is not your fault?</li>
+      <li>Do you or your partner use sarcasm, mockery, or eye-rolling during disagreements?</li>
+      <li>When conflict intensifies, does one of you disengage &mdash; stop replying, leave the room, or go silent?</li>
+      <li>After an argument, do you feel like the original issue was ever actually discussed?</li>
+    </ul>
+
+    <div class="callout-warm">
+      <strong>These questions are for self-reflection, not for scoring your partner.</strong>
+      Using this framework to catalogue your partner's faults is itself a form of criticism. The most useful approach is for each person to notice their own patterns first.
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  Communication Pattern Library &mdash; Prevention, not prosecution. &mdash; <a href="index.html">Back to Library</a>
+</footer>
+
+</body>
+</html>

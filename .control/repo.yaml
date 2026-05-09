@@ -1,0 +1,42 @@
+name: marriage-counselling
+language:
+  primary: python
+  secondary:
+    - typescript
+
+category: product
+owner: joel
+visibility: public
+
+uses:
+  vector_db: true
+  llm_agents: true
+  web_publish: true
+  github_actions: false
+
+allowed_llm_providers:
+  - anthropic
+  - local_ollama
+
+required_files:
+  - INTENT.md
+  - GOAL.md
+  - CLAUDE.md
+  - .gitignore
+
+forbidden_files:
+  - .env
+  - secrets.json
+  - id_rsa
+  - service_account.json
+
+web_publish:
+  method: github_pages
+  source: docs/
+  base_url: /marriage-counselling/
+
+related_repos:
+  - caseledger
+  - docvec
+  - policy-orchestrator
+  - div_legal

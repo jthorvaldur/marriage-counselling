@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DARVO — Communication Pattern Library</title>
+<meta name="description" content="DARVO: Deny, Attack, Reverse Victim and Offender. Evidence-based guide to recognizing and interrupting this communication pattern in relationships.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@200;300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0f172a;
+  --card: #1e293b;
+  --border: #334155;
+  --text: #f1f5f9;
+  --text2: #94a3b8;
+  --accent: #6366f1;
+  --accent-glow: rgba(99,102,241,0.15);
+  --red: #f87171;
+  --green: #4ade80;
+  --yellow: #fbbf24;
+  --orange: #fb923c;
+  --purple: #c084fc;
+  --teal: #2dd4bf;
+}
+@media (prefers-color-scheme: light) {
+  :root { --bg: #f0f2f5; --card: #fff; --border: #e5e7eb; --text: #1a1a2e; --text2: #6b7280; --accent-glow: rgba(99,102,241,0.08); }
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: 'Outfit', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── Nav ── */
+.nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 50;
+  padding: 0 2rem; height: 56px;
+  display: flex; align-items: center; justify-content: space-between;
+  background: rgba(15,23,42,0.85);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border);
+}
+.nav-brand {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.72rem; font-weight: 600;
+  letter-spacing: 0.2em; text-transform: uppercase;
+  color: var(--accent); text-decoration: none;
+}
+.nav-links { display: flex; gap: 1.5rem; list-style: none; }
+.nav-links a {
+  font-size: 0.78rem; font-weight: 400;
+  color: var(--text2); text-decoration: none;
+  transition: color 0.2s;
+}
+.nav-links a:hover { color: var(--text); }
+
+/* ── Container ── */
+.c { max-width: 820px; margin: 0 auto; padding: 100px 2rem 80px; }
+
+/* ── Page Header ── */
+.page-header { margin-bottom: 48px; }
+.page-eyebrow {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.65rem; letter-spacing: 0.3em;
+  text-transform: uppercase; color: var(--accent);
+  margin-bottom: 12px;
+}
+.page-header h1 {
+  font-size: clamp(1.6rem, 3.5vw, 2.4rem);
+  font-weight: 300; letter-spacing: -0.01em;
+  line-height: 1.25; margin-bottom: 8px;
+}
+.page-header h1 strong { font-weight: 600; }
+.page-header .subtitle {
+  font-size: 1rem; color: var(--text2);
+  max-width: 600px;
+}
+
+/* ── Section Headers ── */
+h2 {
+  font-size: 1rem; font-weight: 600;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 8px 8px 0 0;
+  padding: 14px 20px;
+  margin-top: 40px;
+}
+.s {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-top: none;
+  border-radius: 0 0 8px 8px;
+  padding: 20px;
+  margin-bottom: 24px;
+}
+.s p { font-size: 0.92rem; color: var(--text2); margin-bottom: 12px; }
+.s p:last-child { margin-bottom: 0; }
+.s ul, .s ol { margin: 8px 0 12px 20px; }
+.s li { font-size: 0.92rem; color: var(--text2); margin-bottom: 6px; }
+.s li:last-child { margin-bottom: 0; }
+.s strong { color: var(--text); }
+
+/* ── Tables ── */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+  margin: 8px 0;
+}
+th {
+  text-align: left;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text2);
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--border);
+}
+td {
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--border);
+  color: var(--text2);
+  vertical-align: top;
+}
+tr:last-child td { border-bottom: none; }
+tr:hover td { background: rgba(99,102,241,0.04); }
+
+/* ── Labels ── */
+.label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.7rem; font-weight: 500;
+  padding: 2px 8px;
+  border-radius: 4px;
+  display: inline-block;
+  letter-spacing: 0.05em;
+}
+.label-red { background: rgba(248,113,113,0.15); color: var(--red); }
+.label-yellow { background: rgba(251,191,36,0.15); color: var(--yellow); }
+.label-purple { background: rgba(192,132,252,0.15); color: var(--purple); }
+
+/* ── Callouts ── */
+.callout {
+  border-left: 3px solid var(--accent);
+  background: rgba(99,102,241,0.06);
+  border-radius: 0 6px 6px 0;
+  padding: 16px 20px;
+  margin: 16px 0;
+  font-size: 0.88rem;
+}
+.callout-red {
+  border-left: 3px solid var(--red);
+  background: rgba(248,113,113,0.06);
+  border-radius: 0 6px 6px 0;
+  padding: 16px 20px;
+  margin: 16px 0;
+  font-size: 0.88rem;
+}
+.callout-green {
+  border-left: 3px solid var(--green);
+  background: rgba(74,222,128,0.06);
+  border-radius: 0 6px 6px 0;
+  padding: 16px 20px;
+  margin: 16px 0;
+  font-size: 0.88rem;
+}
+.callout-warm {
+  border-left: 3px solid var(--yellow);
+  background: rgba(251,191,36,0.06);
+  border-radius: 0 6px 6px 0;
+  padding: 16px 20px;
+  margin: 16px 0;
+  font-size: 0.88rem;
+}
+.callout-title {
+  font-weight: 600; font-size: 0.85rem;
+  margin-bottom: 6px; color: var(--text);
+}
+.callout p, .callout-red p, .callout-green p, .callout-warm p {
+  color: var(--text2); font-size: 0.88rem;
+  margin-bottom: 8px;
+}
+.callout p:last-child, .callout-red p:last-child,
+.callout-green p:last-child, .callout-warm p:last-child { margin-bottom: 0; }
+
+/* ── Flow Diagram ── */
+.flow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 0;
+  margin: 16px 0;
+}
+.flow-step {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 14px 18px;
+  text-align: center;
+  min-width: 130px;
+  flex: 0 1 auto;
+}
+.flow-step .step-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+.flow-step .step-text {
+  font-size: 0.82rem;
+  color: var(--text2);
+  line-height: 1.4;
+}
+.flow-arrow {
+  font-size: 1.2rem;
+  color: var(--text2);
+  padding: 0 6px;
+  flex-shrink: 0;
+}
+
+/* ── Checklist ── */
+.checklist { list-style: none; margin: 8px 0; padding: 0; }
+.checklist li {
+  font-size: 0.88rem;
+  color: var(--text2);
+  padding: 6px 0 6px 24px;
+  position: relative;
+}
+.checklist li::before {
+  content: '';
+  position: absolute; left: 0; top: 11px;
+  width: 12px; height: 12px;
+  border: 1px solid var(--border);
+  border-radius: 3px;
+}
+
+/* ── Sub-sections within .s ── */
+.sub-heading {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text);
+  margin: 16px 0 8px;
+}
+.sub-heading:first-child { margin-top: 0; }
+
+/* ── Footer ── */
+footer {
+  text-align: center;
+  color: var(--text2);
+  font-size: 0.78rem;
+  margin-top: 40px;
+  padding: 24px 2rem;
+  border-top: 1px solid var(--border);
+}
+footer a { color: var(--text2); }
+
+/* ── Responsive ── */
+@media (max-width: 600px) {
+  .nav { padding: 0 1rem; }
+  .nav-links { gap: 0.8rem; }
+  .c { padding: 80px 1.2rem 60px; }
+  .flow { flex-direction: column; }
+  .flow-arrow { transform: rotate(90deg); padding: 4px 0; }
+  .flow-step { min-width: auto; width: 100%; }
+}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <a href="index.html" class="nav-brand">Marriage Counselling</a>
+  <ul class="nav-links">
+    <li><a href="index.html#patterns">Patterns</a></li>
+    <li><a href="https://github.com/jthorvaldur/marriage-counselling" target="_blank">GitHub</a></li>
+  </ul>
+</nav>
+
+<div class="c">
+
+  <div class="page-header">
+    <div class="page-eyebrow">Communication Pattern</div>
+    <h1><strong>DARVO</strong> &mdash; Deny, Attack, Reverse Victim and Offender</h1>
+    <p class="subtitle">A three-phase response pattern that occurs when a person is confronted about harmful behaviour. Identified by Jennifer Freyd in 1997.</p>
+  </div>
+
+  <!-- ── What is DARVO ── -->
+
+  <h2>What is DARVO</h2>
+  <div class="s">
+    <p>DARVO is an acronym describing a sequence of responses that can occur when someone is held accountable for behaviour that has caused harm. Rather than engaging with the substance of the concern, the conversation shifts through three phases &mdash; and the person who raised the issue ends up feeling like the wrongdoer.</p>
+    <p>The term was coined by psychologist Jennifer Freyd at the University of Oregon in 1997, originally in the context of institutional betrayal research. It has since been recognized as a common pattern in interpersonal relationships.</p>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Phase</th>
+          <th>What happens</th>
+          <th>Example language</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="label label-red">Deny</span></td>
+          <td>The behaviour is denied outright, or its significance is minimized.</td>
+          <td>"That never happened." / "You're exaggerating."</td>
+        </tr>
+        <tr>
+          <td><span class="label label-yellow">Attack</span></td>
+          <td>The person who raised the concern is attacked &mdash; their motives, character, or credibility are questioned.</td>
+          <td>"You're always looking for something to fight about." / "You're paranoid."</td>
+        </tr>
+        <tr>
+          <td><span class="label label-purple">Reverse</span></td>
+          <td>The roles flip. The person who was confronted now presents themselves as the victim, and the person who raised the issue becomes the alleged offender.</td>
+          <td>"I can't believe you would accuse me like this. Do you know how hurtful that is?"</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ── Concrete Example ── -->
+
+  <h2>A Concrete Example</h2>
+  <div class="s">
+    <div class="callout">
+      <div class="callout-title">Scenario: An undisclosed bank account</div>
+      <p>Partner A discovers that Partner B has a bank account that was never mentioned during their years together. Partner A raises the topic.</p>
+      <p><strong>Partner A:</strong> "I found a bank statement for an account I didn't know about. Can we talk about this?"</p>
+      <p><strong>Deny:</strong> "It's nothing &mdash; it's an old account, there's barely anything in it. I didn't mention it because it's not important."</p>
+      <p><strong>Attack:</strong> "Why were you going through my papers? That's a serious invasion of my privacy. You have real trust issues."</p>
+      <p><strong>Reverse:</strong> "I can't live like this &mdash; constantly being surveilled and suspected. I'm the one being wronged here. You need to think about what kind of relationship you want."</p>
+      <p>The original question &mdash; why was the account undisclosed &mdash; is never addressed. Partner A now feels guilty for raising it.</p>
+    </div>
+    <div class="callout-warm">
+      <div class="callout-title">Note on framing</div>
+      <p>This example is not about assigning blame. Many people deploy DARVO without conscious intent &mdash; it is often a learned defensive response. The goal is to help both partners recognize the sequence so it can be interrupted.</p>
+    </div>
+  </div>
+
+  <!-- ── The Cycle ── -->
+
+  <h2>The DARVO Cycle</h2>
+  <div class="s">
+    <p>The pattern typically moves through these steps in sequence. Each phase makes the next one feel more natural, creating momentum that is difficult to interrupt once it is underway.</p>
+
+    <div class="flow">
+      <div class="flow-step">
+        <div class="step-label" style="color: var(--accent);">Trigger</div>
+        <div class="step-text">A concern is raised about specific behaviour</div>
+      </div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-step">
+        <div class="step-label" style="color: var(--red);">Deny</div>
+        <div class="step-text">The behaviour is denied or minimized</div>
+      </div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-step">
+        <div class="step-label" style="color: var(--yellow);">Attack</div>
+        <div class="step-text">The person raising the concern is discredited</div>
+      </div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-step">
+        <div class="step-label" style="color: var(--purple);">Reverse</div>
+        <div class="step-text">Roles flip: confronted person becomes the victim</div>
+      </div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-step">
+        <div class="step-label" style="color: var(--text2);">Result</div>
+        <div class="step-text">Original concern is abandoned; raiser feels guilty</div>
+      </div>
+    </div>
+
+    <p>When this cycle repeats over time, the person who raises concerns learns to stop raising them. The relationship loses its ability to self-correct.</p>
+  </div>
+
+  <!-- ── Why It Works ── -->
+
+  <h2>Why It Works</h2>
+  <div class="s">
+    <p>DARVO is effective because it exploits natural social dynamics, not because the person deploying it is unusually manipulative. Understanding the mechanism helps both partners resist it.</p>
+    <ul>
+      <li><strong>It works on everyone in the room,</strong> not just the person who raised the concern. Bystanders, friends, and family members also shift their perception of who is at fault.</li>
+      <li><strong>It leverages the discomfort of confrontation.</strong> Most people feel uneasy when they confront someone. The attack phase amplifies that discomfort until dropping the subject feels like relief.</li>
+      <li><strong>The reversal feels genuine</strong> to the person performing it. In many cases, the person deploying DARVO truly does feel attacked &mdash; being confronted about one's behaviour is uncomfortable, and the emotional distress is real even when the underlying response pattern is counterproductive.</li>
+      <li><strong>It creates a false equivalence.</strong> "We both hurt each other" becomes the narrative, even when the original concern was about a specific, concrete behaviour.</li>
+      <li><strong>It punishes the act of raising concerns.</strong> Over time, the cost of bringing up problems becomes higher than the cost of enduring them, and the relationship loses its capacity for honest communication.</li>
+    </ul>
+  </div>
+
+  <!-- ── How to Recognize It ── -->
+
+  <h2>How to Recognize It</h2>
+  <div class="s">
+    <p>These indicators do not prove DARVO is occurring &mdash; individual behaviours can appear in any disagreement. The pattern is significant when multiple indicators appear together in a consistent sequence.</p>
+
+    <ul class="checklist">
+      <li>A specific concern was raised, but the conversation ended without addressing it</li>
+      <li>The person who raised the issue ended up apologizing</li>
+      <li>The topic shifted from the original behaviour to the character of the person who raised it</li>
+      <li>Phrases like "you always" or "you never" replaced the specific issue</li>
+      <li>The emotional intensity of the response was disproportionate to the concern raised</li>
+      <li>The person who was confronted became the focus of sympathy or support</li>
+      <li>After the conversation, the person who raised the issue feels confused about whether they were right to bring it up</li>
+      <li>A pattern of topics that "can't be discussed" has developed over time</li>
+      <li>Third parties (friends, family) have been told a version of events where the person who raised the concern is the aggressor</li>
+    </ul>
+
+    <div class="callout-red">
+      <div class="callout-title">Frequency matters</div>
+      <p>Everyone gets defensive sometimes. A single instance of denial or counterattack during an argument does not constitute DARVO. The pattern is clinically significant when it becomes the <em>consistent</em> response to accountability &mdash; when it is how concerns are always handled.</p>
+    </div>
+  </div>
+
+  <!-- ── What to Do ── -->
+
+  <h2>What to Do</h2>
+  <div class="s">
+    <p>Interrupting the DARVO cycle requires awareness from both partners. These strategies are drawn from clinical literature on accountability and emotionally focused therapy.</p>
+
+    <div class="sub-heading">For the person experiencing DARVO</div>
+    <ul>
+      <li><strong>Name the pattern, not the person.</strong> "I notice our conversation has shifted away from the original topic" is more productive than "You're doing DARVO."</li>
+      <li><strong>Write down the original concern before the conversation.</strong> Having it on paper makes it harder for the topic to drift without either partner noticing.</li>
+      <li><strong>Return to the specific.</strong> "I want to come back to the bank account. Can we talk about that specifically?" Concrete topics are harder to deflect than abstract complaints.</li>
+      <li><strong>Validate the distress without abandoning the topic.</strong> "I understand this is uncomfortable. I'm not trying to attack you. I still need us to talk about this."</li>
+      <li><strong>Seek a witness.</strong> If the pattern repeats, having the conversation in the presence of a therapist can prevent the cycle from completing.</li>
+    </ul>
+
+    <div class="sub-heading">For the person deploying DARVO</div>
+    <p>This section is framed without judgment. Many people use this pattern without realizing it. It is often a deeply ingrained response to perceived threat, learned in childhood or previous relationships.</p>
+    <ul>
+      <li><strong>Notice the urge to counterattack.</strong> When confronted, the impulse to redirect the conversation is powerful. Pausing before responding gives you a chance to choose a different path.</li>
+      <li><strong>Separate the behaviour from your identity.</strong> Being told "you did something that hurt me" is not the same as "you are a bad person." Acknowledging a specific action does not mean accepting a wholesale character judgment.</li>
+      <li><strong>Stay with the discomfort.</strong> The urge to deny or redirect is often an attempt to escape an intensely uncomfortable feeling. That feeling is temporary; the damage from deflection is cumulative.</li>
+      <li><strong>Ask clarifying questions instead of defending.</strong> "Help me understand what you experienced" keeps the conversation constructive and shows good faith.</li>
+      <li><strong>Recognize the long-term cost.</strong> Each successful deflection feels like a win in the moment, but erodes your partner's willingness to be honest with you. Eventually, they stop trying.</li>
+    </ul>
+
+    <div class="callout-green">
+      <div class="callout-title">For both partners</div>
+      <p>The cycle is the enemy, not the partner. DARVO is a pattern that happens <em>to</em> the relationship. Both partners can learn to spot it, name it, and interrupt it together. When both people can say "I think we're in the cycle" without it becoming an accusation, the pattern loses its power.</p>
+    </div>
+  </div>
+
+  <!-- ── In Clinical Context ── -->
+
+  <h2>In Clinical Context</h2>
+  <div class="s">
+    <p>Jennifer Freyd first described DARVO in 1997 as part of her research on betrayal trauma at the University of Oregon. Her work examined how institutions and individuals respond when confronted with evidence of wrongdoing.</p>
+    <p>Subsequent research (Harsey, Zurbriggen, &amp; Freyd, 2017) demonstrated empirically that DARVO is effective: participants exposed to DARVO responses were significantly more likely to blame the person who raised the concern and less likely to believe their account.</p>
+    <p>The pattern has been documented across contexts &mdash; interpersonal relationships, workplace dynamics, institutional responses to misconduct, and public discourse. Its prevalence suggests it is a general human defensive mechanism rather than a marker of any particular personality type or disorder.</p>
+
+    <div class="callout-warm">
+      <div class="callout-title">Not a diagnosis</div>
+      <p>DARVO describes a <em>communication pattern</em>, not a personality trait. This platform does not apply diagnostic labels to individuals. The presence of DARVO in a relationship does not mean either partner has a personality disorder. It means the relationship has developed a pattern that prevents honest communication about difficult topics.</p>
+    </div>
+  </div>
+
+  <!-- ── Both Partners ── -->
+
+  <h2>Both Partners Are Users</h2>
+  <div class="s">
+    <div class="callout-green">
+      <div class="callout-title">A reminder about this platform's design</div>
+      <p>This page is visible to both partners. It is designed to be read together or separately, with equal benefit either way. The language is chosen to be accurate without being weaponizable.</p>
+      <p>If you recognize yourself in the "deploying DARVO" section, that recognition is an act of honesty, not an admission of guilt. Defensive patterns are learned behaviours, and they can be unlearned.</p>
+      <p>If you recognize your experience in the "experiencing DARVO" section, this page validates that experience. You are not imagining it. And the goal is not to prove your partner wrong &mdash; it is to help you both see the pattern so you can interrupt it together.</p>
+      <p>The cycle is the enemy. Not your partner.</p>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  Communication Pattern Library &mdash; Prevention, not prosecution.
+</footer>
+
+</body>
+</html>
